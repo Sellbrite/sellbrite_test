@@ -1,28 +1,31 @@
-== README
+Congratulations on making it this far into the Sellbrite developer interview process.  Thanks for taking the time to do this test project.  It’s aim is to demonstrate basic familiarity with Rails and ability to display model information with a simple UI.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Clone the test repository here: https://github.com/Sellbrite/sellbrite_test
 
-Things you may want to cover:
+There is just one model created using Rails scaffold generator.  The Product model contains just a few fields: sku, name, description, price.
 
-* Ruby version
+We would like the ability to add additional custom data to a product, such as "Includes Battery" => "Yes", or "Screen Diagonal" => "7in".  There are multiple ways to achieve this and there is no one right answer.  Using any test framework of your choice, demonstrate the following use cases by writing tests to flush out the implementation.
 
-* System dependencies
+1) Custom data can be added to a product and persisted.  I should be able to store and retrieve abitrary custom strings for any product.
 
-* Configuration
+#for example, and you don't need to use this api
+product.add_custom_field("color", "green")
+product.get_custom_field("color") => "green"
 
-* Database creation
+2) I should be able to rename a custom label, e.g. change "Includes Battery" to "Battery Included" across all products.  This operation should be efficient across thousands of products.
 
-* Database initialization
+#for example
+product.get_custom_field("Includes Battery") => "Yes"
+Product.rename_custom_field("Includes Battery", "Battery Included")
+product.get_custom_field("Battery Included") => "Yes"
 
-* How to run the test suite
+3) I should be able to list all the custom fields I've added across all products.  Again this should be an efficient operation across thousands of products.
 
-* Services (job queues, cache servers, search engines, etc.)
+#for example
+product.add_custom_field("color", "green")
+product2.add_custom_field("size", "blue")
+Product.custom_labels => ["color", "size"]
 
-* Deployment instructions
+4) I should be able to know which products are missing custom fields
 
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+#find all products that do not have custom field 'color'

@@ -1,31 +1,27 @@
-Congratulations on making it this far into the Sellbrite developer interview process.  Thanks for taking the time to do this test project.  It’s aim is to demonstrate basic familiarity with Rails and ability to display model information with a simple UI.
+Congratulations on making it this far into the Sellbrite developer interview process.  Thanks for taking the time to do this test project.  It’s aim is to demonstrate basic familiarity with Rails and ability to implement a new feature by making changes to (or adding) existing models and modifying the UI accordingly.
 
 Clone the test repository here: https://github.com/Sellbrite/sellbrite_test
 
+Run `rake db:migrate`
+
 There is just one model created using Rails scaffold generator.  The Product model contains just a few fields: sku, name, description, price.
 
-We would like the ability to add additional custom data to a product, such as "Includes Battery" => "Yes", or "Screen Diagonal" => "7in".  There are multiple ways to achieve this and there is no one right answer.  Using any test framework of your choice, demonstrate the following use cases by writing tests to flush out the implementation.
+Start your server `rails server` and hit `http://localhost:3000/products` and add a few dummy products.
 
-1) Custom data can be added to a product and persisted.  I should be able to store and retrieve abitrary custom strings for any product.
+Our fields for the product model are quite limited.  Different types of products have wildly different properties to keep track of.  For example electronic toys might need a field to keep track of whether or not a battery is included.  Or cameras might need a field to keep track of the screen size.  
 
-#for example, and you don't need to use this api
-product.add_custom_field("color", "green")
-product.get_custom_field("color") => "green"
+We would like the ability to persist additional custom fields to different types of products, such as "Includes Battery" => "Yes", or "Screen Diagonal" => "7in".  In otherwords, implement a new feature that will allow us to associate arbitrary key/value pairs of data for a product during data entry.  
 
-2) I should be able to rename a custom label, e.g. change "Includes Battery" to "Battery Included" across all products.  This operation should be efficient across thousands of products.
+There are multiple ways to architect this and there is no one "correct" way.  We'd like to see how you would approach a design that fulfills the following requirements:
 
-#for example
-product.get_custom_field("Includes Battery") => "Yes"
-Product.rename_custom_field("Includes Battery", "Battery Included")
-product.get_custom_field("Battery Included") => "Yes"
+1) On the product edit page I should be able to add new custom fields.  For example I could have two text fields: one for key in which I input "Country of Origin" and the other text field for value which I input "China" and a submit button to persist it.
 
-3) I should be able to list all the custom fields I've added across all products.  Again this should be an efficient operation across thousands of products.
+2) I should be able to view a product and see the list of custom fields I have added on it.  
 
-#for example
-product.add_custom_field("color", "green")
-product2.add_custom_field("size", "blue")
-Product.custom_labels => ["color", "size"]
+3) I should be able to remove or change the value of a custom field on a product.
 
-4) I should be able to know which products are missing custom fields
+4) I should not be able to add the same key twice.  For example a product should not be able to have two custom fields that are both named "Country of Origin"
 
-#find all products that do not have custom field 'color'
+5) When adding custom fields to a product, in the UI I would like to see a drop-down list for any previously created custom field keys.  For example if I edit product 'A' and add a new custom field for "Country of Origin" and save it, when I go to edit product 'B' I should be able to select "Country of Origin" from a dropdown instead of having to try to type out or try to remember which keys I have already used before.  
+
+You may make any changes to the UI or the models to make this possible.  This is an exercise in how you think.
